@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/css/bootstrap.min.css"
+      integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+      crossorigin="anonymous"
+    />
+    <style>
+      @media print {
+        th {
+          font-size: 9.5px;
+        }
+        tr,
+        td {
+          font-size: 9.5px !important;
+        }
+      }
+      body {
+        font-family: Arial, sans-serif;
+        color: black;
+      }
+      .strong_detail {
+        height: 50px;
+      }
+      div,
+      strong {
+        font-size: 11.5px;
+      }
+      div,
+      p {
+        font-size: 11.5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="row">
+      <!-- ENCABEZADO -->
+      <div class="col-12 row m-0 justify-content-between w-100">
+        <div class="col-6 d-flex justify-content-between">
+          <strong>RFC emisor:</strong>
+          <p>{{ comprobante['emisor']['rfc']}}</p>
+        </div>
+        <div class="col-6 d-flex justify-content-between">
+          <strong>Folio fiscal:</strong>
+          <p>{{ comprobante['timbre_fiscal_digital']['uuid']}}</p>
+        </div>
+      </div>
+      <div class="col-12 row m-0 justify-content-between w-100">
+        <div class="col-6 d-flex justify-content-between">
+          <strong>Nombre emisor:</strong>
+          <p>{{comprobante['emisor']['nombre']}}</p>
+        </div>
+        <div class="col-6 d-flex justify-content-between">
+          <strong>No. de serie del CSD:</strong>
+          <p>{{comprobante['no_certificado']}}</p>
+        </div>
+      </div>
+      <div class="col-12 row m-0 justify-content-between w-100">
+        <div class="col-6 d-flex justify-content-between">
+          <strong>Folio:</strong>
+          <p>{{comprobante['folio']}}</p>
+        </div>
+        <div class="col-6 d-flex justify-content-between">
+          <strong>Serie:</strong>
+          <p>{{comprobante['serie']}}</p>
+        </div>
+      </div>
+      <div class="col-12 row m-0 justify-content-between w-100">
+        <div class="col-6 d-flex justify-content-between">
+          <strong>RFC receptor:</strong>
+          <p>{{comprobante['receptor']['rfc']}}</p>
+        </div>
+        <div class="col-6 d-flex justify-content-between">
+          <strong>Código postal, fecha y hora de emisión:</strong>
+          <!-- Agrega el campo faltante aquí -->
+          <p>
+            {{comprobante['lugar_expedicion']}}
+            {{comprobante['timbre_fiscal_digital']['fecha_timbrado']}}
+          </p>
+        </div>
+      </div>
+      <div class="col-12 row m-0 justify-content-between w-100">
+        <div class="col-6 d-flex justify-content-between">
+          <strong>Nombre receptor:</strong>
+          <p>{{comprobante['receptor']['nombre']}}</p>
+        </div>
+        <div class="col-6 d-flex justify-content-between">
+          <strong>Efecto de comprobante:</strong>
+          <p>{{comprobante['tipo_de_comprobante']}}</p>
+        </div>
+      </div>
+      <div class="col-12 row m-0 justify-content-between w-100">
+        <div class="col-6 d-flex justify-content-between">
+          <strong>Código postal del receptor:</strong>
+          <p>{{comprobante['receptor']['domicilio_fiscal_receptor']}}</p>
+        </div>
+        <div class="col-6 d-flex justify-content-between">
+          <strong>Régimen fiscal:</strong>
+          <p>{{comprobante['emisor']['regimen_fiscal']}}</p>
+        </div>
+      </div>
+      <div class="col-12 row m-0 justify-content-between w-100">
+        <div class="col-6 d-flex justify-content-between">
+          <strong>Régimen fiscal receptor:</strong>
+          <p>{{comprobante['receptor']['regimen_fiscal_receptor']}}</p>
+        </div>
+        <div class="col-6 d-flex justify-content-between">
+          <strong>Exportación:</strong>
+          <p>{{comprobante['exportacion']}}</p>
+        </div>
+      </div>
+      <div class="col-12 row m-0 justify-content-between w-100">
+        <div class="col-6 d-flex justify-content-between">
+          <strong>Uso CFDI:</strong>
+          <p>{{comprobante['receptor']['uso_cfdi']}}</p>
+        </div>
+      </div>
+      <!-- FIN ENCABEZADO -->
+
+      <!-- TABLA -->
+      <div class="col-12 row m-0 justify-content-between w-100 mx-3">
+        <table class="table table-sm table-bordered m-0">
+          <thead class="table-warning">
+            <tr>
+              <th style="width: 150px" scope="col">
+                Clave del producto y/o servicio
+              </th>
+              <th style="width: 90px" scope="col">No. identificación</th>
+              <th style="width: 50px" scope="col">Cantidad</th>
+              <th style="width: 80px" scope="col">Clave de unidad</th>
+              <th style="width: 80px" scope="col">Unidad</th>
+              <th style="width: 70px" scope="col">Valor unitario</th>
+              <th style="width: 50px" scope="col">Importe</th>
+              <th style="width: 50px" scope="col">Descuento</th>
+              <th style="width: 100px" scope="col">Objeto impuesto</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for concepto in comprobante['conceptos'] %}
+            <tr>
+              <table class="table table-sm table-bordered m-0">
+                <tbody>
+                  <tr>
+                    <td style="width: 150px">
+                      {{ concepto['clave_prod_serv']}}
+                    </td>
+                    <td style="width: 90px"></td>
+                    <td style="width: 50px">{{ concepto['cantidad']}}</td>
+                    <td style="width: 80px">{{ concepto['clave_unidad']}}</td>
+                    <td style="width: 80px">{{ concepto['unidad']}}</td>
+                    <td style="width: 70px">{{ concepto['valor_unitario']}}</td>
+                    <td style="width: 50px">{{ concepto['importe']}}</td>
+                    <td style="width: 50px">{{ concepto['descuento']}}</td>
+                    <td style="width: 100px">{{ concepto['objeto_imp']}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </tr>
+            <tr>
+              {% if 'impuestos' in concepto and 'traslados' in
+              concepto['impuestos'] and concepto['impuestos']['traslados'] and
+              concepto['impuestos']['traslados']|length > 0 or 'retenciones' in
+              concepto['impuestos'] and concepto['impuestos']['retenciones'] and
+              concepto['impuestos']['retenciones']|length > 0 %} {# Aquí puedes
+              realizar las acciones que necesitas cuando hay al menos un
+              elemento en traslados o retenciones #}
+              <div class="d-flex w-100">
+                <div class="">
+                  <div
+                    style="max-height: 250px; min-width: 380px"
+                    class="d-flex flex-row m-0 p-0 align-items-center justify-content-between"
+                  >
+                    <div style="width: 100px">Descripción</div>
+                    <div
+                      style="width: 310px"
+                      class="d-flex flex-grow-1 flex-column text-left mx-1"
+                    >
+                      {{ concepto['descripcion']}}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="d-flex flex-grow-1 flex-row flex-wrap">
+                  <div
+                    style="width: 80px"
+                    class="d-flex flex-column text-center mx-1"
+                  >
+                    <strong class="strong_detail">Impuestos </strong>
+                    <br />
+
+                    {% if 'impuestos' in concepto and 'traslados' in
+                    concepto['impuestos'] and concepto['impuestos']['traslados']
+                    %} {% for traslado in concepto['impuestos']['traslados'] %}
+
+                    <p class="p-0 m-0">{{ traslado['impuesto']}}</p>
+                    {% endfor %} {% else %}
+                    <p class="p-0 m-0"></p>
+                    {% endif %} {% if 'impuestos' in concepto and 'retenciones'
+                    in concepto['impuestos'] and
+                    concepto['impuestos']['retenciones']%} {% for retencion in
+                    concepto['impuestos']['retenciones'] %}
+                    <p class="p-0 m-0">{{ retencion['impuesto']}}</p>
+                    {% endfor %} {% else %}
+                    <p class="p-0 m-0"></p>
+                    {% endif %}
+                  </div>
+
+                  <div
+                    style="width: 80px"
+                    class="d-flex flex-column text-center mx-1"
+                  >
+                    <strong class="strong_detail">Tipo</strong>
+                    <br />
+
+                    {% if 'impuestos' in concepto and 'traslados' in
+                    concepto['impuestos'] and concepto['impuestos']['traslados']
+                    %} {% for traslado in concepto['impuestos']['traslados'] %}
+                    <p class="p-0 m-0">Traslado</p>
+                    {% endfor %} {% else %}
+                    <p class="p-0 m-0"></p>
+                    {% endif %} {% if 'impuestos' in concepto and 'retenciones'
+                    in concepto['impuestos'] and
+                    concepto['impuestos']['retenciones']%} {% for retencion in
+                    concepto['impuestos']['retenciones'] %}
+                    <p class="p-0 m-0">Retención</p>
+                    {% endfor %} {% else %}
+                    <p class="p-0 m-0"></p>
+                    {% endif %}
+                  </div>
+
+                  <div
+                    style="width: 120px"
+                    class="d-flex flex-column text-center mx-1"
+                  >
+                    <strong class="strong_detail">Base</strong>
+                    <br />
+
+                    {% if 'impuestos' in concepto and 'traslados' in
+                    concepto['impuestos'] and concepto['impuestos']['traslados']
+                    %} {% for traslado in concepto['impuestos']['traslados'] %}
+                    <p class="p-0 m-0">{{ traslado['base']}}</p>
+                    {% endfor %} {% else %}
+                    <p class="p-0 m-0"></p>
+                    {% endif %} {% if 'impuestos' in concepto and 'retenciones'
+                    in concepto['impuestos'] and
+                    concepto['impuestos']['retenciones']%} {% for retencion in
+                    concepto['impuestos']['retenciones'] %}
+                    <p class="p-0 m-0">{{ retencion['base']}}</p>
+                    {% endfor %} {% else %}
+                    <p class="p-0 m-0"></p>
+                    {% endif %}
+                  </div>
+
+                  <div
+                    style="width: 60px"
+                    class="d-flex flex-column text-center mx-1"
+                  >
+                    <strong class="strong_detail"
+                      >Tipo <br />
+                      Factor</strong
+                    >
+                    {% if 'impuestos' in concepto and 'traslados' in
+                    concepto['impuestos'] and concepto['impuestos']['traslados']
+                    %} {% for traslado in concepto['impuestos']['traslados'] %}
+                    <p class="p-0 m-0">{{ traslado['tipo_factor']}}</p>
+                    {% endfor %} {% else %}
+                    <p class="p-0 m-0"></p>
+                    {% endif %} {% if 'impuestos' in concepto and 'retenciones'
+                    in concepto['impuestos'] and
+                    concepto['impuestos']['retenciones']%} {% for retencion in
+                    concepto['impuestos']['retenciones'] %}
+                    <p class="p-0 m-0">{{ retencion['tipo_factor']}}</p>
+                    {% endfor %} {% else %}
+                    <p class="p-0 m-0"></p>
+                    {% endif %}
+                  </div>
+
+                  <div
+                    style="width: 60px"
+                    class="d-flex flex-column text-center mx-1"
+                  >
+                    <strong class="strong_detail">
+                      Tasa o
+                      <br />
+                      Cuota
+                    </strong>
+                    {% if 'impuestos' in concepto and 'traslados' in
+                    concepto['impuestos'] and concepto['impuestos']['traslados']
+                    %} {% for traslado in concepto['impuestos']['traslados'] %}
+                    <p class="p-0 m-0">{{ traslado['tasa_o_cuota']}}</p>
+                    {% endfor %} {% else %}
+                    <p class="p-0 m-0"></p>
+                    {% endif %} {% if 'impuestos' in concepto and 'retenciones'
+                    in concepto['impuestos'] and
+                    concepto['impuestos']['retenciones']%} {% for retencion in
+                    concepto['impuestos']['retenciones'] %}
+                    <p class="p-0 m-0">{{ retencion['tasa_o_cuota']}}</p>
+                    {% endfor %} {% else %}
+                    <p class="p-0 m-0"></p>
+                    {% endif %}
+                  </div>
+
+                  <div
+                    style="width: 60px"
+                    class="d-flex flex-column text-center mx-1"
+                  >
+                    <strong class="strong_detail"> Importe </strong>
+                    <br />
+
+                    {% if 'impuestos' in concepto and 'traslados' in
+                    concepto['impuestos'] and concepto['impuestos']['traslados']
+                    %} {% for traslado in concepto['impuestos']['traslados'] %}
+                    <p class="p-0 m-0">{{ traslado['importe']}}</p>
+                    {% endfor %} {% else %}
+                    <p class="p-0 m-0"></p>
+                    {% endif %} {% if 'impuestos' in concepto and 'retenciones'
+                    in concepto['impuestos'] and
+                    concepto['impuestos']['retenciones']%} {% for retencion in
+                    concepto['impuestos']['retenciones'] %}
+                    <p class="p-0 m-0">{{ retencion['importe']}}</p>
+                    {% endfor %} {% else %}
+                    <p class="p-0 m-0"></p>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <!-- FIN TABLA -->
+      <!-- TOTALES -->
+      <div class="col-12 row m-0 p-0 mt-4 justify-content-between w-100">
+        <div class="col-6 d-flex justify-content-between">
+          <strong>Moneda:</strong>
+          <p>{{comprobante['moneda']}}</p>
+        </div>
+        <div class="col-6 d-flex justify-content-between">
+          <strong>Subtotal:</strong>
+          <p>{{comprobante['subtotal']}}</p>
+        </div>
+        <div class="col-6 d-flex justify-content-between">
+          <strong>Forma de pago:</strong>
+          <p>{{comprobante['forma_pago']}}</p>
+        </div>
+        {% if 'impuestos' in comprobante and 'traslados' in
+        comprobante['impuestos'] and
+        comprobante['impuestos']['traslados']|length > 0 %}
+
+        <div class="col-6 d-flex justify-content-between">
+          <strong>Impuestos trasladados </strong>
+
+          <div class="w-50">
+            {% for traslado in comprobante['impuestos']['traslados'] %}
+            <div
+              class="w-100 d-flex justify-content-between align-items-center p-0 mb-0"
+            >
+              <p>{{traslado['impuesto'] }}</p>
+              <p>{{ traslado['tasa_o_cuota'] }}</p>
+              <p>{{traslado['importe'] }}</p>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+
+        <div class="col-6 d-flex justify-content-between">
+          <strong>Método de pago:</strong>
+          <p>{{comprobante['metodo_pago']}}</p>
+        </div>
+
+        {% if 'impuestos' in comprobante and 'retenciones' in
+        comprobante['impuestos'] and
+        comprobante['impuestos']['retenciones']|length > 0 %}
+        <div class="col-6 d-flex justify-content-between">
+          <strong>Impuestos retenidos</strong>
+          <div class="w-50">
+            {% for retencion in comprobante['impuestos']['retenciones'] %}
+            <div
+              class="w-100 d-flex justify-content-between align-items-center p-0 mb-0"
+            >
+              <p>{{ retencion['impuesto'] }}</p>
+              <p>{{ retencion['importe'] }}</p>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+
+        <div class="col-6 d-flex justify-content-between">
+          <strong>Total:</strong>
+          <p>{{comprobante['total']}}</p>
+        </div>
+        {% if comprobante['tipo_cambio'] != "" %}
+        <div class="col-6 d-flex justify-content-between">
+          <strong>Tipo de cambio:</strong>
+          <p>{{comprobante['tipo_cambio']}}</p>
+        </div>
+        {% endif %}
+      </div>
+      <!-- FIN TOTALES -->
+
+      <!-- SELLO CFDI -->
+      <div class="col-12 row m-0 p-0 mx-3 justify-content-between w-100">
+        <strong>Sello digital del CFDI:</strong>
+        <p>{{comprobante['sello']}}</p>
+      </div>
+      <!-- FIN SELLO CFDI -->
+
+      <!-- SELLO SAT -->
+      <div class="col-12 row m-0 p-0 mx-3 justify-content-between w-100">
+        <strong>Sello digital del SAT:</strong>
+        <p>{{comprobante['timbre_fiscal_digital']['sello_sat']}}</p>
+      </div>
+      <!-- FIN SELLO SAT -->
+
+      <!-- FOOTER -->
+      <div class="col-12 mx-2 row m-0 p-0 justify-content-between w-100">
+        <div class="col p-0 row m-0 justify-content-between w-100">
+          <img
+            style="width: 150px; height: 150px"
+            src="data:image/png;base64, {{ base64_qr }}"
+            alt="Imágen del código QR"
+          />
+        </div>
+        <div class="col-10 p-0 row m-0 justify-content-between w-100">
+          <div class="col-12 m-0">
+            <strong
+              >Cadena Original del complemento de certificación digital del
+              SAT:</strong
+            >
+            <p>
+              |1.1|660F677F-37BD-46FD-A9EE-8449B0C2E00B|2023-01-27T07:35:01|TLE011122SC2|cfDstPD3vgEuyD/o+/q1+9Mf8G0LLsSMoJiYR3v1ga6CuWDs7
+              8QaLSxkMWww/1kT+Dd9f8hNu56/CS3aEOcx5txa88U65sC8aGTXLcHlFYnk2qjIfhv2SPJ6A53X/BH6ulaWs9AOj63Dmt6V7/qykaSB17EUBkK9Mz/LNpOn
+              Ni9TbG+btUgReyGnz9KD20eUu1nQxPjv/47dHsZnAFh2pc1j/Ru+uUS/88PYtZCflqd/dSOIltJFBd0LZT1WhDarVGmCELB9EX3k1Ygj1yM8/Gv630hBHhDE
+              RxgpB6CszV0/VZ2vRJz0oedNC7NcVnCCI7HXKmXvKgEa/Cvttsb0RQ==|00001000000503270882||
+            </p>
+          </div>
+          <div class="col-12 p-0 row m-0 justify-content-between w-100">
+            <div class="col-6 m-0 d-flex justify-content-between">
+              <strong>RFC del proveedor de certificación:</strong>
+              <p>{{comprobante['timbre_fiscal_digital']['rfc_prov_certif']}}</p>
+            </div>
+            <div class="col-6 m-0 d-flex justify-content-between">
+              <strong>Fecha y hora de certificación:</strong>
+              <p>{{comprobante['timbre_fiscal_digital']['fecha_timbrado']}}</p>
+            </div>
+          </div>
+          <div class="col-12 p-0 row m-0 justify-content-between w-100">
+            <div class="col-6 m-0 d-flex justify-content-between">
+              <strong>No. de serie del certificado SAT</strong>
+              <p>
+                {{comprobante['timbre_fiscal_digital']['no_certificado_sat']}}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- FIN FOOTER -->
+    </div>
+  </body>
+</html>
